@@ -24,7 +24,7 @@ export default async function AdminUsersPage() {
   const users = Array.isArray(result) ? result : result.users
 
   // Convert the users to the format expected by the UserRow type.
-  const rows: UserRow[] = (users ?? []).map((user) => ({
+  const rows: UserRow[] = (users ?? []).map((user: UserRow) => ({
     id: user._id,
     name: user.name,
     email: user.email,
