@@ -67,7 +67,6 @@ export default function NewJobPage() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const jobData: JobFormData = { ...form }
-    console.log("new job form data:", jobData)
     // TODO: wire into the backend (`POST /jobs` or similar).
 
     const result = await createJob(jobData)
@@ -79,6 +78,7 @@ export default function NewJobPage() {
       })
       router.push("/dashboard/recruiter/jobs")
     }
+    console.log(result)
   }
 
   return (

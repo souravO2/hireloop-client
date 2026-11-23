@@ -1,5 +1,6 @@
 import type { JobRow } from "@/lib/type/jobs"
 import { ApplicationRow } from "../type/applications"
+import { authFetch } from "../core/server"
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
@@ -26,7 +27,8 @@ export const getJobById = async (jobId: string): Promise<JobRow | null> => {
 export const getApplications = async (
   query = ""
 ): Promise<ApplicationRow[]> => {
-  const res = await fetch(`${BASE_URL}/applications?${query}`)
+  const api = `${BASE_URL}/applications?${query}`
+  const res = await authFetch(api)
   return res.json()
 }
 
