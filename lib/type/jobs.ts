@@ -8,6 +8,10 @@ export type JobStatus = "active" | "expired"
 // Flat form data, keys mirror the Figma layer names (isRemote, deadline, minSalary…).
 export type JobFormData = {
   title: string
+  /** MongoDB ObjectId — present on documents fetched from the API, absent on
+   *  newly composed form data (a fresh job has no id until it is created).
+   *  `JobRow` below narrows it to a required `string`. */
+  _id?: string
   companyName: string
   recruiterId: string
   category: string

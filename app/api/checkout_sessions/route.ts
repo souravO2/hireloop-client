@@ -5,6 +5,10 @@ import { getServerSession } from "@/lib/core/server"
 
 export async function POST() {
   const userSession = await getServerSession()
+
+  if (!userSession?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
   try {
     const headersList = await headers()
     const origin = headersList.get("origin")

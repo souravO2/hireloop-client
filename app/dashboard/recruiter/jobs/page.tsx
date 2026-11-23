@@ -50,7 +50,7 @@ const cellClass = "px-3 py-3.5"
 
 export default async function RecruiterJobsPage() {
   const session = await getServerSession()
-  const jobs: JobRow[] = await getJobs(`recruiterId=${session?.user?.id}`)
+  const jobs: JobRow[] = await getJobs(`recruiterId=${session?.user.id}`)
   console.log("jobs data", jobs) // wire to backend fetch later
 
   return (

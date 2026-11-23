@@ -4,13 +4,9 @@ import { authFetch } from "../core/server"
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
-export const getJobs = async (query: string = "") => {
-  try {
-    const res = await fetch(`${BASE_URL}/jobs?${query}`, { cache: "no-store" })
-    return res.json()
-  } catch (err) {
-    console.log(err)
-  }
+export const getJobs = async (query = ""): Promise<JobRow[]> => {
+  const res = await fetch(`${BASE_URL}/jobs?${query}`)
+  return res.json()
 }
 
 export const getJobById = async (jobId: string): Promise<JobRow | null> => {
