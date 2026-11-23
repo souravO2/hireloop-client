@@ -9,7 +9,7 @@
 import { ROLE_META, UserRole, UserRow } from "@/lib/type/user"
 import { PageContainer, PageHeader } from "../../page-shell"
 import { UsersTable } from "./userTable"
-import { getUsers } from "@/lib/api/user-server"
+import { getUsers } from "@/lib/api/users"
 
 const cardShadow =
   "shadow-[0_1px_2px_rgba(0,0,0,0.35)] shadow-[inset_0_1px_rgba(255,255,255,0.035)]"
@@ -25,7 +25,7 @@ export default async function AdminUsersPage() {
 
   // Convert the users to the format expected by the UserRow type.
   const rows: UserRow[] = (users ?? []).map((user) => ({
-    id: user.id,
+    id: user._id,
     name: user.name,
     email: user.email,
     role: toUserRole(user.role),

@@ -11,12 +11,14 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useSession } from "@/lib/auth-client"
-import { Plus, PlusCircle } from "lucide-react"
+import { ROLE_META, UserRole } from "@/lib/type/user"
+import { PlusCircle } from "lucide-react"
 import {
   Bookmark,
   Briefcase,
   Building2,
   FileText,
+  Home,
   LayoutDashboard,
   Users,
   Wallet,
@@ -24,8 +26,7 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import Link from "next/link"
-
-type Role = "seeker" | "recruiter" | "admin"
+import { UserAvatar } from "./shared/user-avatar"
 
 type MenuItem = {
   id: string
@@ -34,8 +35,10 @@ type MenuItem = {
   icon: LucideIcon
 }
 
+const homeItem: MenuItem = { id: "home", name: "Home", url: "/", icon: Home }
+
 // Sidebar nav from the `HL 2.0/Sidebar` Figma component (per-role variants).
-const menuItemsByRole: Record<Role, MenuItem[]> = {
+const menuItemsByRole: Record<UserRole, MenuItem[]> = {
   seeker: [
     {
       id: "dashboard",
@@ -144,14 +147,40 @@ const menuItemsByRole: Record<Role, MenuItem[]> = {
 
 export function DashboardSidebar() {
   const { data: session, isPending } = useSession()
-  const role: Role = session?.user?.role || "seeker"
+  const role: UserRole = session?.user?.role || "seeker"
 
   return (
     <Sidebar>
-      <SidebarHeader />
+      <SidebarHeader>
+        {/* Signed-in user: avatar + name + role */}
+        <div className="flex items-center gap-2.5 px-2 py-1.5">
+          <UserAvatar
+            src={session?.user?.image}
+            name={session?.user?.name}
+            className="size-9"
+          />
+          <div className="flex min-w-0 flex-col">
+            <span className="truncate text-sm font-medium text-[#EDEDEF]">
+              {isPending ? "…" : session?.user?.name}
+            </span>
+            <span className="truncate text-xs text-[#6E6E78]">
+              {ROLE_META[role].label}
+            </span>
+          </div>
+        </div>
+      </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
+        <SidebarGroup>
+          <SidebarMenu>
+            {/* Shared across all roles: back to the public site */}
+            <SidebarMenuItem key={homeItem.id}>
+              <SidebarMenuButton render={<Link href={homeItem.url} />}>
+                <homeItem.icon />
+                <span>{homeItem.name}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarMenu>
             {menuItemsByRole[role].map((item) => (

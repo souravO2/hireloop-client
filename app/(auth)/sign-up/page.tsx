@@ -20,6 +20,7 @@ export default function SignUpPage() {
         password: data.password,
         callbackURL: "/",
         role: data.role, // "seeker" | "recruiter" | "admin"
+        image: data.image, // optional
       })
 
     console.log("signup response", signUpResponse, signUpError)
