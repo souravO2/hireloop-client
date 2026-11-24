@@ -142,106 +142,120 @@ export default async function RecruiterJobsPage() {
               </tr>
             </thead>
             <tbody>
-              {jobs.map((job) => (
-                <tr
-                  key={job._id}
-                  className="border-b border-white/5 transition-colors last:border-b-0 hover:bg-white/[0.03]"
-                >
-                  {/* Job title & dept */}
-                  <td className={cn(cellClass, "px-5")}>
-                    <div className="flex items-center gap-3">
-                      <span
-                        className="hidden size-10 shrink-0 items-center justify-center rounded-lg bg-[#5C53FE]/15 text-sm font-semibold text-[#8B85FF] sm:flex"
-                        aria-hidden
-                      >
-                        {job.title.charAt(0)}
-                      </span>
-                      <div className="flex min-w-0 flex-col">
-                        <span className="truncate font-medium text-[#EDEDEF]">
-                          {job.title}
-                        </span>
-                        <span className="truncate text-xs text-white/50">
-                          {job.category}
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-
-                  {/* Company & location */}
-                  <td className={cn(cellClass, cellVis.company)}>
-                    <div className="flex min-w-0 flex-col">
-                      <span className="truncate text-[#EDEDEF]">
-                        {job.companyName}
-                      </span>
-                      <span className="truncate text-xs text-white/50">
-                        {job.isRemote
-                          ? `Remote (${job.location})`
-                          : job.location}
-                      </span>
-                    </div>
-                  </td>
-
-                  {/* Type */}
-                  <td className={cn(cellClass, cellVis.type)}>
-                    <span className={typePillClass}>{job.jobType}</span>
-                  </td>
-
-                  {/* Compensation */}
-                  <td className={cn(cellClass, cellVis.compensation)}>
-                    <span className="whitespace-nowrap text-white/80">
-                      {formatCompensation(job)}
-                    </span>
-                  </td>
-
-                  {/* Applicants */}
-                  <td className={cn(cellClass, cellVis.applicants)}>
-                    <span className="flex items-center gap-2 whitespace-nowrap text-white/80">
-                      <Users aria-hidden className="size-4 text-white/40" />
-                      {job.applicants} candidates
-                    </span>
-                  </td>
-
-                  {/* Status */}
-                  <td className={cellClass}>
-                    <span className={cn(badgeClass, statusStyles[job.status])}>
-                      {job.status}
-                    </span>
-                  </td>
-
-                  {/* Deadline */}
-                  <td className={cn(cellClass, cellVis.deadline)}>
-                    <div className="flex flex-col whitespace-nowrap">
-                      <span className="text-[#EDEDEF]">
-                        {formatDeadline(job.deadline)}
-                      </span>
-                      <span className="text-xs text-white/50">
-                        {job.posted}
-                      </span>
-                    </div>
-                  </td>
-
-                  {/* Actions */}
-                  <td className={cn(cellClass, "px-5")}>
-                    <div className="flex items-center gap-1">
-                      <Link
-                        href={`/dashboard/recruiter/jobs/${job._id}/applications`}
-                        aria-label={`View applications for ${job.title}`}
-                        className={iconButtonClass}
-                      >
-                        <FileText aria-hidden className="size-4" />
-                      </Link>
-                      <button
-                        type="button"
-                        aria-label={`Edit ${job.title}`}
-                        className={iconButtonClass}
-                      >
-                        <Pencil aria-hidden className="size-4" />
-                      </button>
-                      <DeleteJobDialog job={job}></DeleteJobDialog>
-                    </div>
+              {jobs.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={8}
+                    className="px-5 py-12 text-center text-sm text-white/50"
+                  >
+                    No job posts yet. Create one to start receiving
+                    applications.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                jobs.map((job) => (
+                  <tr
+                    key={job._id}
+                    className="border-b border-white/5 transition-colors last:border-b-0 hover:bg-white/[0.03]"
+                  >
+                    {/* Job title & dept */}
+                    <td className={cn(cellClass, "px-5")}>
+                      <div className="flex items-center gap-3">
+                        <span
+                          className="hidden size-10 shrink-0 items-center justify-center rounded-lg bg-[#5C53FE]/15 text-sm font-semibold text-[#8B85FF] sm:flex"
+                          aria-hidden
+                        >
+                          {job.title.charAt(0)}
+                        </span>
+                        <div className="flex min-w-0 flex-col">
+                          <span className="truncate font-medium text-[#EDEDEF]">
+                            {job.title}
+                          </span>
+                          <span className="truncate text-xs text-white/50">
+                            {job.category}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Company & location */}
+                    <td className={cn(cellClass, cellVis.company)}>
+                      <div className="flex min-w-0 flex-col">
+                        <span className="truncate text-[#EDEDEF]">
+                          {job.companyName}
+                        </span>
+                        <span className="truncate text-xs text-white/50">
+                          {job.isRemote
+                            ? `Remote (${job.location})`
+                            : job.location}
+                        </span>
+                      </div>
+                    </td>
+
+                    {/* Type */}
+                    <td className={cn(cellClass, cellVis.type)}>
+                      <span className={typePillClass}>{job.jobType}</span>
+                    </td>
+
+                    {/* Compensation */}
+                    <td className={cn(cellClass, cellVis.compensation)}>
+                      <span className="whitespace-nowrap text-white/80">
+                        {formatCompensation(job)}
+                      </span>
+                    </td>
+
+                    {/* Applicants */}
+                    <td className={cn(cellClass, cellVis.applicants)}>
+                      <span className="flex items-center gap-2 whitespace-nowrap text-white/80">
+                        <Users aria-hidden className="size-4 text-white/40" />
+                        {job.applicants} candidates
+                      </span>
+                    </td>
+
+                    {/* Status */}
+                    <td className={cellClass}>
+                      <span
+                        className={cn(badgeClass, statusStyles[job.status])}
+                      >
+                        {job.status}
+                      </span>
+                    </td>
+
+                    {/* Deadline */}
+                    <td className={cn(cellClass, cellVis.deadline)}>
+                      <div className="flex flex-col whitespace-nowrap">
+                        <span className="text-[#EDEDEF]">
+                          {formatDeadline(job.deadline)}
+                        </span>
+                        <span className="text-xs text-white/50">
+                          {job.posted}
+                        </span>
+                      </div>
+                    </td>
+
+                    {/* Actions */}
+                    <td className={cn(cellClass, "px-5")}>
+                      <div className="flex items-center gap-1">
+                        <Link
+                          href={`/dashboard/recruiter/jobs/${job._id}/applications`}
+                          aria-label={`View applications for ${job.title}`}
+                          className={iconButtonClass}
+                        >
+                          <FileText aria-hidden className="size-4" />
+                        </Link>
+                        <button
+                          type="button"
+                          aria-label={`Edit ${job.title}`}
+                          className={iconButtonClass}
+                        >
+                          <Pencil aria-hidden className="size-4" />
+                        </button>
+                        <DeleteJobDialog job={job}></DeleteJobDialog>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

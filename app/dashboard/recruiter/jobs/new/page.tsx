@@ -66,8 +66,19 @@ export default function NewJobPage() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const jobData: JobFormData = { ...form }
-    // TODO: wire into the backend (`POST /jobs` or similar).
+
+    // Read the session at submit time: `useState` snapshots recruiterId while
+    // useSession() is still loading, so a mount-time value can be "".
+    const recruiterId = session?.user?.id ?? ""
+    if (!recruiterId) {
+      toast.add({
+        title: "Session expired",
+        description: "Sign in again to post a job.",
+      })
+      return
+    }
+
+    const jobData: JobFormData = { ...form, recruiterId }
 
     const result = await createJob(jobData)
     if (result.insertedId) {
